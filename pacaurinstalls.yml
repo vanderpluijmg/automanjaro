@@ -1,0 +1,21 @@
+---
+- name: Cloning ansible-pacaur
+  hosts: local
+  tasks: 
+    - name: cloning git
+      git:
+        repo: https://github.com/sanderboom/ansible-pacaur
+        dest: /home/john/ansible_installs/pacaur-ansible
+        clone: yes
+        update: yes
+    - name: copying pacaur file to ansible directory
+            become: yes
+            copy: 
+              src: /home/john/ansible_installs/ansible-pacaur/pacaur 
+              dest: /home/john/automanjaro/library
+    - name: installing packages with pacaur
+      pacaur: name="{{item}}" state=present
+      with_items:
+        - jetbrains-toolbox
+        - balena-etcher
+        - rbenv

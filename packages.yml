@@ -1,0 +1,7 @@
+- name: Install pacman and pacaur
+  hosts: local
+  gather_facts: yes
+  tasks: 
+    - name: call packages role
+      import_role:
+        name: package_install

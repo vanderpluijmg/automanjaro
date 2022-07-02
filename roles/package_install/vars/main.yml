@@ -1,0 +1,21 @@
+---
+# vars file for package_install
+ansible_installs: "{{ansible_env.HOME}}/ansible_installs"
+install_packages_pacman:
+    - binutils
+    - gcc
+    - expac
+    - yajl
+    - jq
+    - make
+    - base-devel
+    - git
+    - fakechroot
+    - gtest
+    - meson
+install_packages_pacaur:
+    - jetbrains-toolbox
+    - balena-etcher
+pacaur_git: https://aur.archlinux.org/pacaur.git
+auracle-git_git: https://aur.archlinux.org/cgit/aur.git/snapshot/auracle-git.tar.gz
+ansible-pacaur_git: https://github.com/sanderboom/ansible-pacaur

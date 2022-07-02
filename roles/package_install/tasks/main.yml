@@ -1,0 +1,63 @@
+---
+- name: full pacman update
+  pacman: 
+    upgrade: yes
+    update_cache: yes
+  tags: 
+  - upgrade
+ 
+- name: installing pacman dependencies
+  become: yes
+  pacman: 
+    name: '{{install_packages_pacman}}'
+    state: latest
+  tags:
+    - packages
+- name: cloning auracle-git
+  ansible.builtin.get_url:
+    url: '{{auracle-git_git}}'
+    dest: '{{ansible_installs}/auracle_git' 
+  
+- name: unpacking auracle-git
+  command: chdir=/home/john/ansible_installs/auracle-git tar -xzf auracle-git.tar.gz
+    
+- name: making auracle-git
+  command: chdir=/home/john/ansible_installs/auracle_git/auracle-git makepkg -f PKGBUILD --noconfirm
+
+- name: finding auracle-git
+  ansible.builtin.find:
+    paths: '{{ansible_installs}}/auracle_git/auracle-git'
+    recurse: yes
+    patterns: 'auracle-git-*'
+  register: result
+- name: installing auracle-git
+  become: yes
+  command: chdir=/home/john/ansible_installs/auracle_git/auracle-git pacman -U "{{item.path}}" --noconfirm
+  with_items: "{{result.files}}"
+    
+- name: cloning pacaur
+  git:
+    repo: '{{pacaur_git}}'
+    dest: '{{ansibal_installs}/pacaur'
+    clone: yes
+    update: yes
+
+- name: making pacaur
+  command:
+    chdir=/home/john/ansible_installs/pacaur makepkg -si --noconfirm
+
+- name: cloning ansible-pacaur git
+  git: 
+    repo: "{{ansible-pacaur_git}}"
+    dest: "{{ansible_installs}}/pacaur-ansible"
+    clone: yes
+    update: yes
+
+- name: copying pacaur file to ansible directory
+  become: yes
+  copy:
+    src: "{{ansible_installs}}/ansible-pacaur/pacaur"
+    dest: /home/john/automanjaro/library
+
+- name: installing pacaur packages
+  pacaur: name= "{{install_packages_pacaur}}" state= present
