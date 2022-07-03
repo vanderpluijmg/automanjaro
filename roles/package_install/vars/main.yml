@@ -16,6 +16,10 @@ install_packages_pacman:
 install_packages_pacaur:
     - jetbrains-toolbox
     - balena-etcher
+    - discord
+    - feh
+    - termite
+    - brave
 pacaur_git: https://aur.archlinux.org/pacaur.git
 auracle-git_git: https://aur.archlinux.org/cgit/aur.git/snapshot/auracle-git.tar.gz
 ansible-pacaur_git: https://github.com/sanderboom/ansible-pacaur
